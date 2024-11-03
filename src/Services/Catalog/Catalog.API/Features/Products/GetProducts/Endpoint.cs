@@ -3,7 +3,7 @@
 namespace Catalog.API.Features.Products.GetProducts;
 
 internal sealed class GetProductsEndpoint(IDocumentSession documentSession)
-    : EndpointWithoutRequest<IEnumerable<Response>, Mapper>
+    : EndpointWithoutRequest<Response, Mapper>
 {
     public override void Configure()
     {
@@ -11,6 +11,7 @@ internal sealed class GetProductsEndpoint(IDocumentSession documentSession)
         Get("products");
         Options(a =>
         {
+            a.WithName("GetProducts");
             a.Produces<IEnumerable<Response>>();
             a.WithDescription("Get all products");
             a.WithSummary("Get all products");

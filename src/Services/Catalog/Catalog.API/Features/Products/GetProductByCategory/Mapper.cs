@@ -1,4 +1,4 @@
-﻿namespace Catalog.API.Features.Products.GetProducts;
+﻿namespace Catalog.API.Features.Products.GetProductByCategory;
 
 internal sealed class Mapper : ResponseMapper<Response, IEnumerable<Product>>
 {

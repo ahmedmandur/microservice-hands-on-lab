@@ -2,12 +2,13 @@
 
 public static class Data
 {
-    internal static async Task<Response> CreateProduct(IDocumentSession session, Product product,
+    internal static async Task<Guid> CreateProduct(IDocumentSession session,
+        Product product,
         CancellationToken cancellationToken)
     {
         session.Store(product);
         await session.SaveChangesAsync(cancellationToken);
 
-        return new Response(product.Id);
+        return product.Id;
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Catalog.API.Features.Products.GetProductById;
+﻿using Catalog.API.Exceptions;
+
+namespace Catalog.API.Features.Products.GetProductById;
 
 internal sealed class GetProductByIdEndpoint(IDocumentSession documentSession)
     : EndpointWithoutRequest<Response, Mapper>
@@ -9,6 +11,7 @@ internal sealed class GetProductByIdEndpoint(IDocumentSession documentSession)
         Get("products/{id}");
         Options(a =>
         {
+            a.WithName("GetProductById");
             a.Produces<Response>();
             a.ProducesProblem(StatusCodes.Status404NotFound);
             a.WithDescription("Get a product with providing its Id");
@@ -20,6 +23,10 @@ internal sealed class GetProductByIdEndpoint(IDocumentSession documentSession)
     {
         var id = Route<string>("Id");
         var response = await Data.GetProductById(documentSession, id!, ct);
+
+        if (response is null)
+            throw new ProductNotFoundException(Guid.Parse(id!));
+
         await SendOkAsync(Map.FromEntity(response), ct);
     }
 }

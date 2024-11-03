@@ -1,4 +1,4 @@
-using FastEndpoints.Swagger;
+using BuildingBlocks.Exceptions.Handler;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,12 +8,15 @@ builder.Services.AddMarten(opts =>
 }).UseLightweightSessions();
 
 builder.Services
-    .AddFastEndpoints()
-    .SwaggerDocument();
+    .AddFastEndpoints();
+
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
 var app = builder.Build();
 
-app.UseFastEndpoints()
-    .UseSwaggerGen();
+app.UseFastEndpoints();
+
+app.UseExceptionHandler(_ => { });
+
 
 await app.RunAsync();
